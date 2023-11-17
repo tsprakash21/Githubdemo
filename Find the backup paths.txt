@@ -1,0 +1,9 @@
+Select backup_start_date, database_name, physical_device_name, type, backup_size, [user_name],
+database_creation_date, backup_finish_date, backupset.media_set_id  
+from msdb..backupset backupset left join msdb..backupmediafamily backupmediafamily
+On backupmediafamily.media_set_id = backupset.media_set_id
+where type in ('D' , 'I','L') and database_name ='EDDS7169193' order by backup_start_date desc 
+
+
+
+

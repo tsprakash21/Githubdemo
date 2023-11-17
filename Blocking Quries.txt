@@ -1,0 +1,15 @@
+select DB_NAME(S.database_id  ) dbname ,percent_complete, qt.text ,cpu_time ,reads , writes , * from sys.dm_exec_requests   S 
+Cross apply sys.dm_exec_sql_text(s.sql_handle) AS qt
+where s.session_id  > 50 
+--and blocked <>0 
+order by 3 desc
+
+select DB_NAME(S.dbid ) dbname , qt.text ,cpu, hostname, * from sys.sysprocesses  S 
+Cross apply sys.dm_exec_sql_text(s.sql_handle) AS qt
+where spid > 50 
+and blocked <>0 
+order by 3 desc
+
+select distinct blocked as [Blocking Process] from sys.sysprocesses
+where  blocked != 0
+and blocked not in (select spid from sys.sysprocesses where blocked != 0)
